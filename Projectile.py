@@ -1,20 +1,18 @@
 import pygame, sys
 from pygame.locals import *
 
-class Spaceship:
-    def __init__(self):
-        self.color = (255, 255, 255)
-        self.x = 250
-        self.y = 400
-        self.w = 25
-        self.h = 40
+class Projectile:
+    def __init__(self, x, y):
+        self.color = (253, 204, 17)
+        self.x = x
+        self.y = y
+        self.speed = -5
 
     def update(self):
-        pos = pygame.mouse.get_pos()
-        self.x = pos[0]
+        self.y += self.speed
 
     def display(self):
-        pygame.draw.rect(screen, self.color, (self.x, self.y, self.w, self.h))
+        pygame.draw.line(screen, self.color, (self.x, self.y), (self.x, self.y - self.speed))
 
 
 if __name__ == '__main__':
@@ -24,8 +22,9 @@ if __name__ == '__main__':
     height = 500
     screen = pygame.display.set_mode((width, height))
     pygame.display.set_caption('Old School Video Game')
+    clock = pygame.time.Clock()
 
-    spaceship = Spaceship()
+    p = Projectile(250, 400)
 
     while True:
         # Re-initialize
@@ -37,9 +36,11 @@ if __name__ == '__main__':
                 sys.exit()
 
         # Update logic
-        spaceship.update()
+        p.update()
 
         # Display
-        screen.fill((0, 0, 0));
-        spaceship.display()
+        screen.fill((0, 0, 0))
+        p.display()
+
         pygame.display.update()
+        clock.tick_busy_loop(20)
