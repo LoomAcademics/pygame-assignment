@@ -32,7 +32,8 @@ class Spaceship:
         self.x = pos[0]
 
     def display(self):
-        pygame.draw.rect(screen, self.color, (self.x, self.y, self.w, self.h))
+        offset = self.w / 2
+        pygame.draw.rect(screen, self.color, (self.x - offset, self.y, self.w, self.h))
 
 
 if __name__ == '__main__':
@@ -44,6 +45,7 @@ if __name__ == '__main__':
     pygame.display.set_caption('Old School Video Game')
     clock = pygame.time.Clock()
 
+    player = Spaceship()
     projectileList = []
     hasFired = False
 
@@ -61,21 +63,23 @@ if __name__ == '__main__':
                     hasFired = True
 
         # Update logic
+        player.update()
         if hasFired:
-            projectileList.append(Projectile(250, 400))
+            projectileList.append(Projectile(player.x, 400))
 
         for p in projectileList:
             p.update()
-            
+
             if p.isDead:
                 projectileList.remove(p)
 
         # Display
         screen.fill((0, 0, 0))
 
+        player.display()
         for p in projectileList:
             p.display()
 
         pygame.display.update()
         print(len(projectileList))
-        clock.tick_busy_loop(20)
+        clock.tick_busy_loop(60)
